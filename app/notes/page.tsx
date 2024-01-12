@@ -1,24 +1,24 @@
 import Link from "next/link";
+import styles from "./Notes.module.css";
 
 async function getNotes() {
-  // fetch data from a pocketbase url endpoint
+  // const db = new PocketBase('http://127.0.0.1:8090');
+  // const result = await db.records.getList('notes');
   const res = await fetch(
-    "http://127.0.0.1:8090/api/collections/notes/records?page=1&perPage=30"
+    "http://127.0.0.1:8090/api/collections/notes/records?page=1&perPage=30",
+    { cache: "no-store" }
   );
-
-  // convert to json
   const data = await res.json();
-
-  // return the data as an array
   return data?.items as any[];
 }
 
 export default async function NotesPage() {
   const notes = await getNotes();
+
   return (
     <div>
       <h1>Notes</h1>
-      <div>
+      <div className={styles.grid}>
         {notes?.map((note) => {
           return <Note key={note.id} note={note} />;
         })}
@@ -32,9 +32,9 @@ function Note({ note }: any) {
 
   return (
     <Link href={`/notes/${id}`}>
-      <div>
+      <div className={styles.note}>
         <h2>{title}</h2>
-        <p>{content}</p>
+        <h5>{content}</h5>
         <p>{created}</p>
       </div>
     </Link>

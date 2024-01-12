@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 async function getNotes() {
   // fetch data from a pocketbase url endpoint
   const res = await fetch(
@@ -16,6 +18,25 @@ export default async function NotesPage() {
   return (
     <div>
       <h1>Notes</h1>
+      <div>
+        {notes?.map((note) => {
+          return <Note key={note.id} note={note} />;
+        })}
+      </div>
     </div>
+  );
+}
+
+function Note({ note }: any) {
+  const { id, title, content, created } = note || {};
+
+  return (
+    <Link href={`/notes/${id}`}>
+      <div>
+        <h2>{title}</h2>
+        <p>{content}</p>
+        <p>{created}</p>
+      </div>
+    </Link>
   );
 }

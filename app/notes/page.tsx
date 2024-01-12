@@ -12,6 +12,7 @@ async function getNotes() {
 }
 
 export default async function NotesPage() {
+  const notes = await getNotes();
   return (
     <div>
       <h1>Notes</h1>
